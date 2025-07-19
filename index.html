@@ -1169,31 +1169,37 @@
 
             // Form submission handler
             const contactForm = document.querySelector('.contact-form form');
-            if (contactForm) {
-                contactForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    
-                    // Get form data
-                    const formData = new FormData(contactForm);
-                    const name = formData.get('name');
-                    const email = formData.get('email');
-                    const service = formData.get('service');
-                    const message = formData.get('message');
-                    
-                    // Simple validation
-                    if (!name || !email || !message) {
-                        alert('Please fill in all required fields.');
-                        return;
-                    }
-                    
-                    // Show success message
-                    alert(`Thank you, ${name}! Your message has been received. We'll get back to you within 24 hours.`);
-                    
-                    // Reset form
-                    contactForm.reset();
-                });
-            }
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(contactForm);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const service = formData.get('service');
+        const message = formData.get('message');
+        
+        if (!name || !email || !message) {
+            alert('Please fill in all required fields.');
+            return;
+        }
 
+        const whatsappNumber = "918712112669"; // Include country code (91 for India)
+        const text = `Hello TechVision Studio,%0A
+Name: ${name}%0A
+Email: ${email}%0A
+Service Interested: ${service}%0A
+Project Details: ${message}`;
+
+        // Use whatsapp:// for better reliability
+const whatsappURL = `whatsapp://send?phone=${whatsappNumber}&text=${text}`;
+
+// Redirect
+window.location.href = whatsappURL;
+
+        contactForm.reset();
+    });
+}
             // Add loading animation to buttons
             document.querySelectorAll('.btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
