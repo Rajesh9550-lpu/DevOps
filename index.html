@@ -1168,7 +1168,8 @@
             });
 
             // Form submission handler
-            const contactForm = document.querySelector('.contact-form form');
+           // Form submission handler - UPDATED FOR EMAIL
+const contactForm = document.querySelector('.contact-form form');
 if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -1184,19 +1185,35 @@ if (contactForm) {
             return;
         }
 
-        const whatsappNumber = "919949421162"; // Include country code (91 for India)
-        const text = `Hello CodeBlend Services,%0A
-Name: ${name}%0A
-Email: ${email}%0A
-Service Interested: ${service}%0A
-Project Details: ${message}`;
+        // Email configuration
+        const recipientEmail = "techcre.02@gmail.com";
+        const subject = `New Contact Form Submission from ${name}`;
+        const body = `Hello CodeBlend Services,
 
-        // Use whatsapp:// for better reliability
-const whatsappURL = `whatsapp://send?phone=${whatsappNumber}&text=${text}`;
+I am interested in your services and would like to get in touch.
 
-// Redirect
-window.location.href = whatsappURL;
+Name: ${name}
+Email: ${email}
+Service Interested In: ${service || 'Not specified'}
 
+Project Details:
+${message}
+
+Please get back to me at your earliest convenience.
+
+Best regards,
+${name}`;
+
+        // Create mailto link
+        const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
+        // Open email client
+        window.location.href = mailtoLink;
+
+        // Show success message
+        alert('Your default email client should now open with the pre-filled message. Please send the email to complete your inquiry.');
+        
+        // Reset form
         contactForm.reset();
     });
 }
