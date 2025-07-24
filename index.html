@@ -1170,53 +1170,52 @@
             // Form submission handler
            // Form submission handler - UPDATED FOR EMAIL
 const contactForm = document.querySelector('.contact-form form');
+
 if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        
+
         const formData = new FormData(contactForm);
         const name = formData.get('name');
         const email = formData.get('email');
         const service = formData.get('service');
         const message = formData.get('message');
-        
+
         if (!name || !email || !message) {
             alert('Please fill in all required fields.');
             return;
         }
 
-        // Email configuration
-        const recipientEmail = "techcre.02@gmail.com";
-        const subject = `New Contact Form Submission from ${name}`;
-        const body = `Hello CodeBlend Services,
+        // Message content (URL-encoded line breaks: %0A)
+        const formattedMessage = `Hello CodeBlend Services,%0A%0A` +
+            `I am interested in your services and would like to get in touch.%0A%0A` +
+            `Name: ${name}%0A` +
+            `Email: ${email}%0A` +
+            `Service Interested In: ${service || 'Not specified'}%0A%0A` +
+            `Project Details:%0A${message}%0A%0A` +
+            `Best regards,%0A${name}`;
 
-I am interested in your services and would like to get in touch.
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-Name: ${name}
-Email: ${email}
-Service Interested In: ${service || 'Not specified'}
+        if (isMobile) {
+            // ✅ Mobile → WhatsApp
+            const phoneNumber = '919949421162'; // With country code, no "+" sign
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${formattedMessage}`;
+            window.location.href = whatsappLink;
+        } else {
+            // ✅ Desktop → Email client
+            const recipientEmail = "techcre.02@gmail.com";
+            const subject = `New Contact Form Submission from ${name}`;
+            const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${formattedMessage}`;
+            window.location.href = mailtoLink;
 
-Project Details:
-${message}
+            alert('Your default email client should now open with the pre-filled message. Please send the email to complete your inquiry.');
+        }
 
-Please get back to me at your earliest convenience.
-
-Best regards,
-${name}`;
-
-        // Create mailto link
-        const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
-        // Open email client
-        window.location.href = mailtoLink;
-
-        // Show success message
-        alert('Your default email client should now open with the pre-filled message. Please send the email to complete your inquiry.');
-        
-        // Reset form
         contactForm.reset();
     });
 }
+
             // Add loading animation to buttons
             document.querySelectorAll('.btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
